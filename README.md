@@ -1,4 +1,4 @@
-## Oblivion Alchemy
+## Oblivion Alchemy Lab
 
 Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.
 

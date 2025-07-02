@@ -55,7 +55,7 @@ export default function Home() {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <h1 className="absolute w-screen text-center text-lg">Oblivion Enchantment Altar</h1>
+        <h1 className="absolute w-screen text-center text-lg">Oblivion Alchemy Lab</h1>
         <div className="max-w-screen m-auto flex h-screen max-h-screen max-w-6xl flex-col bg-inherit">
           {/* Title */}
 

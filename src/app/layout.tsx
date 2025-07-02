@@ -15,21 +15,21 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Oblivion Alchemy Calculator',
+  title: 'Oblivion Alchemy Lab',
   description:
     'Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.',
   openGraph: {
-    title: 'Oblivion Alchemy Calculator',
+    title: 'Oblivion Alchemy Lab',
     description:
       'Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.',
     url: 'https://alchemy.oblivion.tools',
-    siteName: 'Oblivion Alchemy Calculator',
+    siteName: 'Oblivion Alchemy Lab',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Oblivion Alchemy Calculator',
+    title: 'Oblivion Alchemy Lab',
     description:
       'Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.',
   },
