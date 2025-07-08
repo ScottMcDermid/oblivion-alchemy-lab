@@ -1,5 +1,5 @@
 services:
-  oblivion-alchemy:
+  oblivion-alchemy-lab:
     container_name: $CONTAINER_NAME
     build:
       context: .
@@ -13,7 +13,7 @@ services:
     profiles:
       - production
 
-  oblivion-alchemy-dev:
+  oblivion-alchemy-lab-dev:
     container_name: $CONTAINER_NAME
     build:
       context: .

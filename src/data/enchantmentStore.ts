@@ -56,7 +56,7 @@ const useEnchantmentStore = create<EnchantmentStore>()(
       };
     },
     {
-      name: 'oblivion-enchantment-altar',
+      name: 'oblivion-alchemy-lab',
       version: 1,
       storage: createJSONStorage(
         () => (typeof window !== 'undefined' ? localStorage : ({} as Storage)), // Fallback for SSR; you might implement a noop Storage if needed
