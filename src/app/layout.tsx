@@ -17,11 +17,11 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: 'Oblivion Alchemy Lab',
   description:
-    'Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.',
+    'Plan and calculate potions and poisons in The Elder Scrolls IV: Oblivion. Select ingredients, configure your alchemy skill, and see exact potion results with accurate UESP formulas.',
   openGraph: {
     title: 'Oblivion Alchemy Lab',
     description:
-      'Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.',
+      'Plan and calculate potions and poisons in The Elder Scrolls IV: Oblivion. Select ingredients, configure your alchemy skill, and see exact potion results with accurate UESP formulas.',
     url: 'https://alchemy.oblivion.tools',
     siteName: 'Oblivion Alchemy Lab',
     type: 'website',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Oblivion Alchemy Lab',
     description:
-      'Mix, match, and master potion creation in Oblivion with a powerful alchemy planning tool.',
+      'Plan and calculate potions and poisons in The Elder Scrolls IV: Oblivion. Select ingredients, configure your alchemy skill, and see exact potion results with accurate UESP formulas.',
   },
   alternates: {
     canonical: 'https://alchemy.oblivion.tools',
