@@ -24,6 +24,15 @@ type Action = {
   setRetortQuality: (quality: ApparatusQuality | null) => void;
   setCalcinatorQuality: (quality: ApparatusQuality | null) => void;
   setAlembicQuality: (quality: ApparatusQuality | null) => void;
+  loadBrew: (data: {
+    selectedIngredients: Ingredient[];
+    alchemySkill: number;
+    luck: number;
+    mortarPestleQuality: ApparatusQuality;
+    retortQuality: ApparatusQuality | null;
+    calcinatorQuality: ApparatusQuality | null;
+    alembicQuality: ApparatusQuality | null;
+  }) => void;
 };
 
 type AlchemyStore = State & { actions: Action };
@@ -69,6 +78,16 @@ export const useAlchemyStore = create<AlchemyStore>()(
             set(() => ({ calcinatorQuality: quality })),
           setAlembicQuality: (quality) =>
             set(() => ({ alembicQuality: quality })),
+          loadBrew: (data) =>
+            set(() => ({
+              selectedIngredients: data.selectedIngredients,
+              alchemySkill: data.alchemySkill,
+              luck: data.luck,
+              mortarPestleQuality: data.mortarPestleQuality,
+              retortQuality: data.retortQuality,
+              calcinatorQuality: data.calcinatorQuality,
+              alembicQuality: data.alembicQuality,
+            })),
         },
       };
     },
