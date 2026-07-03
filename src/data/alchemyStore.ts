@@ -79,6 +79,7 @@ export const useAlchemyStore = create<AlchemyStore>()(
         () => (typeof window !== 'undefined' ? localStorage : ({} as Storage)),
       ),
       partialize: (state) => ({
+        selectedIngredients: state.selectedIngredients,
         alchemySkill: state.alchemySkill,
         luck: state.luck,
         mortarPestleQuality: state.mortarPestleQuality,
