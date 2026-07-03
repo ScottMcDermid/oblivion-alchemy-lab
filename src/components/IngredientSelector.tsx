@@ -94,7 +94,7 @@ export default function IngredientSelector({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="mb-4 flex items-center gap-1 px-2">
+      <div className="mb-4 mt-2 flex items-center gap-1 px-2">
         <TextField
           label="Search Ingredients"
           variant="outlined"
@@ -133,7 +133,7 @@ export default function IngredientSelector({
               className="justify-start text-left normal-case"
             >
               <div className="flex w-full items-center gap-2 p-1">
-                <div className="flex shrink-0 gap-0.5">
+                <div className="flex w-[86px] shrink-0 gap-0.5">
                   {ingredient.effects.map((eid, idx) => {
                     if (eid === null) return null;
                     const isVisible = idx < visibleCount;
