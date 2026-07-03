@@ -7,7 +7,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   IconButton,
+  Switch,
   Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -25,6 +27,7 @@ export interface IngredientFilters {
   showDlc: boolean;
   showCommon: boolean;
   showRare: boolean;
+  includeInaccessibleEffects: boolean;
 }
 
 export const defaultFilters: IngredientFilters = {
@@ -33,6 +36,7 @@ export const defaultFilters: IngredientFilters = {
   showDlc: true,
   showCommon: true,
   showRare: true,
+  includeInaccessibleEffects: false,
 };
 
 export function isFilterActive(filters: IngredientFilters): boolean {
@@ -41,7 +45,8 @@ export function isFilterActive(filters: IngredientFilters): boolean {
     !filters.showDlc ||
     !filters.showCommon ||
     !filters.showRare ||
-    filters.selectedEffects.size > 0
+    filters.selectedEffects.size > 0 ||
+    filters.includeInaccessibleEffects
   );
 }
 
@@ -109,6 +114,26 @@ export default function IngredientFilterDialog({
       <DialogTitle>Filter Ingredients</DialogTitle>
 
       <DialogContent className="space-y-5 p-4">
+        {/* Inaccessible effects toggle */}
+        <div className="rounded-md border border-[#2e2e2e] bg-[#1e1e1e] px-3 py-1">
+          <FormControlLabel
+            control={
+              <Switch
+                size="small"
+                checked={filters.includeInaccessibleEffects}
+                onChange={(_e, checked) =>
+                  onFiltersChange({ ...filters, includeInaccessibleEffects: checked })
+                }
+              />
+            }
+            label={
+              <div>
+                <div className="text-sm">Match effects beyond your alchemy level</div>
+              </div>
+            }
+          />
+        </div>
+
         {/* Source */}
         <div>
           <Typography variant="subtitle2" className="mb-2">
@@ -119,17 +144,13 @@ export default function IngredientFilterDialog({
               label="Vanilla"
               variant={filters.showVanilla ? 'filled' : 'outlined'}
               color={filters.showVanilla ? 'primary' : 'default'}
-              onClick={() =>
-                onFiltersChange({ ...filters, showVanilla: !filters.showVanilla })
-              }
+              onClick={() => onFiltersChange({ ...filters, showVanilla: !filters.showVanilla })}
             />
             <Chip
               label="Shivering Isles"
               variant={filters.showDlc ? 'filled' : 'outlined'}
               color={filters.showDlc ? 'primary' : 'default'}
-              onClick={() =>
-                onFiltersChange({ ...filters, showDlc: !filters.showDlc })
-              }
+              onClick={() => onFiltersChange({ ...filters, showDlc: !filters.showDlc })}
             />
           </div>
         </div>
@@ -144,17 +165,13 @@ export default function IngredientFilterDialog({
               label="Common"
               variant={filters.showCommon ? 'filled' : 'outlined'}
               color={filters.showCommon ? 'primary' : 'default'}
-              onClick={() =>
-                onFiltersChange({ ...filters, showCommon: !filters.showCommon })
-              }
+              onClick={() => onFiltersChange({ ...filters, showCommon: !filters.showCommon })}
             />
             <Chip
               label="Rare"
               variant={filters.showRare ? 'filled' : 'outlined'}
               color={filters.showRare ? 'secondary' : 'default'}
-              onClick={() =>
-                onFiltersChange({ ...filters, showRare: !filters.showRare })
-              }
+              onClick={() => onFiltersChange({ ...filters, showRare: !filters.showRare })}
             />
           </div>
         </div>
@@ -164,7 +181,7 @@ export default function IngredientFilterDialog({
           <div className="mb-2 flex items-center justify-between">
             <Typography variant="subtitle2">Effects</Typography>
             {filters.selectedEffects.size > 0 && (
-              <Button size="small" onClick={clearEffects} className="normal-case text-xs">
+              <Button size="small" onClick={clearEffects} className="text-xs normal-case">
                 Clear
               </Button>
             )}
@@ -191,12 +208,7 @@ export default function IngredientFilterDialog({
                     !isVisible && 'opacity-40',
                   )}
                 >
-                  <Checkbox
-                    size="small"
-                    checked={isSelected}
-                    tabIndex={-1}
-                    sx={{ padding: 0 }}
-                  />
+                  <Checkbox size="small" checked={isSelected} tabIndex={-1} sx={{ padding: 0 }} />
                   <Image
                     src={`/icons/effects/${effect.icon}.png`}
                     width={20}
@@ -229,12 +241,7 @@ export default function IngredientFilterDialog({
                     !isVisible && 'opacity-40',
                   )}
                 >
-                  <Checkbox
-                    size="small"
-                    checked={isSelected}
-                    tabIndex={-1}
-                    sx={{ padding: 0 }}
-                  />
+                  <Checkbox size="small" checked={isSelected} tabIndex={-1} sx={{ padding: 0 }} />
                   <Image
                     src={`/icons/effects/${effect.icon}.png`}
                     width={20}
