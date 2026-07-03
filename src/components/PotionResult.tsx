@@ -61,10 +61,8 @@ export default function PotionResult() {
 
   const isMaster = getMastery(alchemySkill) === 'Master';
   const needsMoreIngredients =
-    selectedIngredients.length === 0 ||
-    (selectedIngredients.length === 1 && !isMaster);
-  const noSharedEffects =
-    !potion && !needsMoreIngredients && selectedIngredients.length >= 2;
+    selectedIngredients.length === 0 || (selectedIngredients.length === 1 && !isMaster);
+  const noSharedEffects = !potion && !needsMoreIngredients && selectedIngredients.length >= 2;
 
   // Always render the panel container for layout stability
   return (
@@ -84,9 +82,7 @@ export default function PotionResult() {
           <div className="space-y-2">
             {potion.effects.map((pe) => {
               const effect = effectById[pe.id];
-              const isUnwanted = potion.isPoison
-                ? !pe.isNegativeEffect
-                : pe.isNegativeEffect;
+              const isUnwanted = potion.isPoison ? !pe.isNegativeEffect : pe.isNegativeEffect;
 
               return (
                 <div
@@ -108,10 +104,7 @@ export default function PotionResult() {
 
                   {isUnwanted && (
                     <Tooltip title="Side effect">
-                      <WarningAmberIcon
-                        fontSize="small"
-                        className="text-yellow-600"
-                      />
+                      <WarningAmberIcon fontSize="small" className="text-yellow-600" />
                     </Tooltip>
                   )}
                 </div>
@@ -143,14 +136,6 @@ export default function PotionResult() {
           <div className="space-y-2 opacity-30">
             <div className="flex items-center gap-2 px-2 py-1">
               <div className="h-6 w-6 rounded bg-[#2e2e2e]" />
-              <SkeletonBar className="w-3/4" />
-            </div>
-            <div className="flex items-center gap-2 px-2 py-1">
-              <div className="h-6 w-6 rounded bg-[#2e2e2e]" />
-              <SkeletonBar className="w-1/2" />
-            </div>
-            <div className="flex items-center gap-2 px-2 py-1">
-              <div className="h-6 w-6 rounded bg-[#2e2e2e]" />
               <SkeletonBar className="w-2/3" />
             </div>
           </div>
@@ -159,9 +144,7 @@ export default function PotionResult() {
             <span>-- gold</span>
           </div>
           {selectedIngredients.length === 1 && (
-            <div className="mt-2 text-center text-xs text-ghost">
-              Select another ingredient...
-            </div>
+            <div className="mt-2 text-center text-xs text-ghost">Select another ingredient...</div>
           )}
         </>
       )}
