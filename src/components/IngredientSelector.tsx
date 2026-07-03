@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { TextField, Button, Tooltip } from '@mui/material';
+import { Badge, TextField, Button, IconButton, Tooltip } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Image from 'next/image';
 
 import { effectById, EffectId } from '@/data/effects';
@@ -7,6 +8,11 @@ import { ingredients, Ingredient } from '@/data/ingredients';
 import { useAlchemyStore } from '@/data/alchemyStore';
 import { getVisibleEffectCount } from '@/utils/alchemyUtils';
 import { cn } from '@/utils/cn';
+import IngredientFilterDialog, {
+  defaultFilters,
+  IngredientFilters,
+  isFilterActive,
+} from '@/components/IngredientFilterDialog';
 
 function getEffectIconPath(effectId: EffectId): string {
   return `/icons/effects/${effectById[effectId].icon}.png`;
@@ -18,11 +24,15 @@ export default function IngredientSelector({
   onIngredientSelect: (ingredient: Ingredient) => void;
 }) {
   const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState<IngredientFilters>(defaultFilters);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const selectedIngredients = useAlchemyStore((s) => s.selectedIngredients);
   const alchemySkill = useAlchemyStore((s) => s.alchemySkill);
 
   const visibleCount = useMemo(() => getVisibleEffectCount(alchemySkill), [alchemySkill]);
+
+  const filterActive = isFilterActive(filters);
 
   const filteredIngredients = useMemo(() => {
     const selectedIds = new Set(selectedIngredients.map((i) => i.id));
@@ -40,6 +50,23 @@ export default function IngredientSelector({
 
     return ingredients.filter((ingredient) => {
       if (selectedIds.has(ingredient.id)) return false;
+
+      // Source filter
+      if (!filters.showVanilla && !ingredient.isDlc) return false;
+      if (!filters.showDlc && ingredient.isDlc) return false;
+
+      // Rarity filter
+      if (!filters.showCommon && !ingredient.isRare) return false;
+      if (!filters.showRare && ingredient.isRare) return false;
+
+      // Effect filter
+      if (filters.selectedEffects.size > 0) {
+        const hasMatchingEffect = ingredient.effects.some((eid) => {
+          if (eid === null) return false;
+          return filters.selectedEffects.has(eid);
+        });
+        if (!hasMatchingEffect) return false;
+      }
 
       // Only show ingredients that share at least one visible effect with selected
       if (hasSelection) {
@@ -60,19 +87,34 @@ export default function IngredientSelector({
         return effectById[eid].name.toLowerCase().includes(lowerSearch);
       });
     });
-  }, [search, selectedIngredients, visibleCount]);
+  }, [search, selectedIngredients, visibleCount, filters]);
 
   return (
     <div className="flex h-full flex-col">
-      <TextField
-        label="Search Ingredients"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-4 px-2"
-      />
+      <div className="mb-4 flex items-center gap-1 px-2">
+        <TextField
+          label="Search Ingredients"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Tooltip title="Filter Ingredients">
+          <IconButton
+            onClick={() => setIsFilterOpen(true)}
+            size="small"
+          >
+            <Badge
+              color="secondary"
+              variant="dot"
+              invisible={!filterActive}
+            >
+              <FilterListIcon />
+            </Badge>
+          </IconButton>
+        </Tooltip>
+      </div>
 
       <div className="min-h-0 flex-1">
         <div className="h-full space-y-1 overflow-y-auto rounded-md border border-[#2e2e2e] p-2">
@@ -132,6 +174,13 @@ export default function IngredientSelector({
           )}
         </div>
       </div>
+
+      <IngredientFilterDialog
+        open={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filters={filters}
+        onFiltersChange={setFilters}
+      />
     </div>
   );
 }
