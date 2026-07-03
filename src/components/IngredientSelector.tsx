@@ -28,8 +28,29 @@ export default function IngredientSelector({
     const selectedIds = new Set(selectedIngredients.map((i) => i.id));
     const lowerSearch = search.toLowerCase();
 
+    // Collect all visible effects from selected ingredients for shared-effect filtering
+    const selectedVisibleEffects = new Set<EffectId>();
+    for (const sel of selectedIngredients) {
+      for (let i = 0; i < visibleCount; i++) {
+        const eid = sel.effects[i];
+        if (eid !== null) selectedVisibleEffects.add(eid);
+      }
+    }
+    const hasSelection = selectedIngredients.length > 0;
+
     return ingredients.filter((ingredient) => {
       if (selectedIds.has(ingredient.id)) return false;
+
+      // Only show ingredients that share at least one visible effect with selected
+      if (hasSelection) {
+        const hasSharedEffect = ingredient.effects.some((eid, idx) => {
+          if (eid === null) return false;
+          if (idx >= visibleCount) return false;
+          return selectedVisibleEffects.has(eid);
+        });
+        if (!hasSharedEffect) return false;
+      }
+
       if (!search) return true;
 
       if (ingredient.name.toLowerCase().includes(lowerSearch)) return true;
@@ -39,7 +60,7 @@ export default function IngredientSelector({
         return effectById[eid].name.toLowerCase().includes(lowerSearch);
       });
     });
-  }, [search, selectedIngredients]);
+  }, [search, selectedIngredients, visibleCount]);
 
   return (
     <div className="flex h-full flex-col">

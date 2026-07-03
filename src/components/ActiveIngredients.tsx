@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import { Button, IconButton, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Image from 'next/image';
 
 import { effectById, EffectId } from '@/data/effects';
@@ -16,6 +17,7 @@ export default function ActiveIngredients() {
   const selectedIngredients = useAlchemyStore((s) => s.selectedIngredients);
   const alchemySkill = useAlchemyStore((s) => s.alchemySkill);
   const removeIngredient = useAlchemyStore((s) => s.actions.removeIngredient);
+  const clearIngredients = useAlchemyStore((s) => s.actions.clearIngredients);
 
   const visibleCount = useMemo(
     () => getVisibleEffectCount(alchemySkill),
@@ -37,6 +39,21 @@ export default function ActiveIngredients() {
 
   return (
     <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-ghost">
+          {selectedIngredients.length} / 4 ingredients
+        </span>
+        <Button
+          size="small"
+          color="error"
+          onClick={clearIngredients}
+          startIcon={<DeleteIcon fontSize="small" />}
+          className="normal-case text-xs"
+        >
+          Clear All
+        </Button>
+      </div>
+
       {selectedIngredients.map((ingredient) => (
         <div
           key={ingredient.id}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -80,19 +80,31 @@ export default function PlayerSettingsDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const alchemySkill = useAlchemyStore((s) => s.alchemySkill);
-  const luck = useAlchemyStore((s) => s.luck);
+  const storeAlchemySkill = useAlchemyStore((s) => s.alchemySkill);
+  const storeLuck = useAlchemyStore((s) => s.luck);
   const mortarPestleQuality = useAlchemyStore((s) => s.mortarPestleQuality);
   const retortQuality = useAlchemyStore((s) => s.retortQuality);
   const calcinatorQuality = useAlchemyStore((s) => s.calcinatorQuality);
   const alembicQuality = useAlchemyStore((s) => s.alembicQuality);
   const actions = useAlchemyStore((s) => s.actions);
 
-  const mastery = useMemo(() => getMastery(alchemySkill), [alchemySkill]);
-  const visibleEffects = useMemo(() => getVisibleEffectCount(alchemySkill), [alchemySkill]);
+  // Local state for sliders to avoid re-rendering the entire app on every tick
+  const [localAlchemySkill, setLocalAlchemySkill] = useState(storeAlchemySkill);
+  const [localLuck, setLocalLuck] = useState(storeLuck);
+
+  // Sync local state when dialog opens or store values change externally
+  useEffect(() => {
+    if (open) {
+      setLocalAlchemySkill(storeAlchemySkill);
+      setLocalLuck(storeLuck);
+    }
+  }, [open, storeAlchemySkill, storeLuck]);
+
+  const mastery = useMemo(() => getMastery(localAlchemySkill), [localAlchemySkill]);
+  const visibleEffects = useMemo(() => getVisibleEffectCount(localAlchemySkill), [localAlchemySkill]);
   const effectiveAlchemy = useMemo(
-    () => getEffectiveAlchemy(alchemySkill, luck),
-    [alchemySkill, luck],
+    () => getEffectiveAlchemy(localAlchemySkill, localLuck),
+    [localAlchemySkill, localLuck],
   );
 
   return (
@@ -125,16 +137,21 @@ export default function PlayerSettingsDialog({
             <TextField
               type="number"
               size="small"
-              value={alchemySkill}
-              onChange={(e) => actions.setAlchemySkill(Number(e.target.value))}
+              value={localAlchemySkill}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setLocalAlchemySkill(val);
+                actions.setAlchemySkill(val);
+              }}
               inputProps={{ min: 0, max: 100, step: 1 }}
               className="w-20"
               variant="standard"
             />
           </div>
           <Slider
-            value={alchemySkill}
-            onChange={(_e, val) => actions.setAlchemySkill(val as number)}
+            value={localAlchemySkill}
+            onChange={(_e, val) => setLocalAlchemySkill(val as number)}
+            onChangeCommitted={(_e, val) => actions.setAlchemySkill(val as number)}
             min={0}
             max={100}
             step={1}
@@ -152,16 +169,21 @@ export default function PlayerSettingsDialog({
             <TextField
               type="number"
               size="small"
-              value={luck}
-              onChange={(e) => actions.setLuck(Number(e.target.value))}
+              value={localLuck}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setLocalLuck(val);
+                actions.setLuck(val);
+              }}
               inputProps={{ min: 0, max: 100, step: 1 }}
               className="w-20"
               variant="standard"
             />
           </div>
           <Slider
-            value={luck}
-            onChange={(_e, val) => actions.setLuck(val as number)}
+            value={localLuck}
+            onChange={(_e, val) => setLocalLuck(val as number)}
+            onChangeCommitted={(_e, val) => actions.setLuck(val as number)}
             min={0}
             max={100}
             step={1}
