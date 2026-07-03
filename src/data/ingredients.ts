@@ -640,7 +640,7 @@ const allIngredients: Ingredient[] = [
     name: 'Nirnroot',
     weight: 0.1,
     value: 10,
-    effects: [null, null, null, null],
+    effects: ['DRHE', 'DRFA', 'DRAT_AGI', 'DRAT_SPD'],
     isDlc: false,
     isRare: true,
   },

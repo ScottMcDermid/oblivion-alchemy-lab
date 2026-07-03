@@ -30,6 +30,8 @@ export type EffectId =
   | 'DGFA'
   | 'DGHE'
   | 'DGSP'
+  | 'DRAT_AGI'
+  | 'DRAT_SPD'
   | 'DRFA'
   | 'DRHE'
   | 'FIDG'
@@ -289,6 +291,26 @@ const allEffects: Effect[] = [
     effectType: 'most',
     description: 'Damage the target\'s Magicka.',
     icon: 'DGSP',
+  },
+  {
+    id: 'DRAT_AGI',
+    name: 'Drain Agility',
+    baseCost: 0.7,
+    school: 'Destruction',
+    isNegativeEffect: true,
+    effectType: 'most',
+    description: 'Temporarily drain the target\'s Agility.',
+    icon: 'DRAT',
+  },
+  {
+    id: 'DRAT_SPD',
+    name: 'Drain Speed',
+    baseCost: 0.7,
+    school: 'Destruction',
+    isNegativeEffect: true,
+    effectType: 'most',
+    description: 'Temporarily drain the target\'s Speed.',
+    icon: 'DRAT',
   },
   {
     id: 'DRFA',
