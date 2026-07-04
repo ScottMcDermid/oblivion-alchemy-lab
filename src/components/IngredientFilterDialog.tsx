@@ -32,7 +32,7 @@ export interface IngredientFilters {
   showDlc: boolean;
   showCommon: boolean;
   showRare: boolean;
-  includeInaccessibleEffects: boolean;
+  includeHiddenEffects: boolean;
 }
 
 export const defaultFilters: IngredientFilters = {
@@ -41,7 +41,7 @@ export const defaultFilters: IngredientFilters = {
   showDlc: true,
   showCommon: true,
   showRare: true,
-  includeInaccessibleEffects: false,
+  includeHiddenEffects: false,
 };
 
 export function isFilterActive(filters: IngredientFilters): boolean {
@@ -51,7 +51,7 @@ export function isFilterActive(filters: IngredientFilters): boolean {
     !filters.showCommon ||
     !filters.showRare ||
     filters.selectedEffects.size > 0 ||
-    filters.includeInaccessibleEffects
+    filters.includeHiddenEffects
   );
 }
 
@@ -242,21 +242,24 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Inaccessible effects toggle */}
+      {/* Include hidden effects toggle */}
       <div className="rounded-md border border-[#2e2e2e] bg-[#1e1e1e] px-3 py-1">
         <FormControlLabel
           control={
             <Switch
               size="small"
-              checked={filters.includeInaccessibleEffects}
+              checked={filters.includeHiddenEffects}
               onChange={(_e, checked) =>
-                onFiltersChange({ ...filters, includeInaccessibleEffects: checked })
+                onFiltersChange({ ...filters, includeHiddenEffects: checked })
               }
             />
           }
           label={
             <div>
-              <div className="text-sm">Match effects beyond your alchemy level</div>
+              <div className="text-sm">Include hidden effects</div>
+              <div className="text-xs text-ghost">
+                Match ingredients using effects beyond your alchemy level
+              </div>
             </div>
           }
         />

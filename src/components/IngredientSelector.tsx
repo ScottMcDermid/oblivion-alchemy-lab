@@ -36,9 +36,10 @@ export default function IngredientSelector({
     const selectedIds = new Set(selectedIngredients.map((i) => i.id));
     const lowerSearch = search.toLowerCase();
 
+    // When includeHiddenEffects is on, scan all 4 slots; otherwise only visible ones
+    const slotLimit = filters.includeHiddenEffects ? 4 : visibleCount;
+
     // Collect effects from selected ingredients for shared-effect filtering
-    // When includeInaccessibleEffects is on, scan all 4 slots; otherwise only visible ones
-    const slotLimit = filters.includeInaccessibleEffects ? 4 : visibleCount;
     const selectedEffectsForMatching = new Set<EffectId>();
     for (const sel of selectedIngredients) {
       for (let i = 0; i < slotLimit; i++) {
@@ -59,17 +60,17 @@ export default function IngredientSelector({
       if (!filters.showCommon && !ingredient.isRare) return false;
       if (!filters.showRare && ingredient.isRare) return false;
 
-      // Effect filter
+      // Effect filter -- respects includeHiddenEffects for slot visibility
       if (filters.selectedEffects.size > 0) {
-        const hasMatchingEffect = ingredient.effects.some((eid) => {
+        const hasMatchingEffect = ingredient.effects.some((eid, idx) => {
           if (eid === null) return false;
+          if (idx >= slotLimit) return false;
           return filters.selectedEffects.has(eid);
         });
         if (!hasMatchingEffect) return false;
       }
 
       // Only show ingredients that share at least one effect with selected
-      // Respects includeInaccessibleEffects toggle for slot visibility
       if (hasSelection) {
         const hasSharedEffect = ingredient.effects.some((eid, idx) => {
           if (eid === null) return false;
