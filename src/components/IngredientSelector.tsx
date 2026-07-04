@@ -8,11 +8,7 @@ import { ingredients, Ingredient } from '@/data/ingredients';
 import { useAlchemyStore } from '@/data/alchemyStore';
 import { getVisibleEffectCount } from '@/utils/alchemyUtils';
 import { cn } from '@/utils/cn';
-import IngredientFilterDialog, {
-  defaultFilters,
-  IngredientFilters,
-  isFilterActive,
-} from '@/components/IngredientFilterDialog';
+import { IngredientFilters, isFilterActive } from '@/components/IngredientFilterDialog';
 
 function getEffectIconPath(effectId: EffectId): string {
   return `/icons/effects/${effectById[effectId].icon}.png`;
@@ -20,12 +16,14 @@ function getEffectIconPath(effectId: EffectId): string {
 
 export default function IngredientSelector({
   onIngredientSelect,
+  filters,
+  onToggleFilter,
 }: {
   onIngredientSelect: (ingredient: Ingredient) => void;
+  filters: IngredientFilters;
+  onToggleFilter: () => void;
 }) {
   const [search, setSearch] = useState('');
-  const [filters, setFilters] = useState<IngredientFilters>(defaultFilters);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const selectedIngredients = useAlchemyStore((s) => s.selectedIngredients);
   const alchemySkill = useAlchemyStore((s) => s.alchemySkill);
@@ -105,7 +103,7 @@ export default function IngredientSelector({
         />
         <Tooltip title="Filter Ingredients">
           <IconButton
-            onClick={() => setIsFilterOpen(true)}
+            onClick={onToggleFilter}
             size="small"
           >
             <Badge
@@ -177,13 +175,6 @@ export default function IngredientSelector({
           )}
         </div>
       </div>
-
-      <IngredientFilterDialog
-        open={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        filters={filters}
-        onFiltersChange={setFilters}
-      />
     </div>
   );
 }
