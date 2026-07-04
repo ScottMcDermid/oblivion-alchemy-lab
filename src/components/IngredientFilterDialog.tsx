@@ -135,19 +135,19 @@ function FilterContent({
         onClick={() => toggleEffect(effect.id)}
         onKeyDown={(e) => e.key === 'Enter' && toggleEffect(effect.id)}
         className={cn(
-          'flex cursor-pointer items-center gap-2 px-3 py-1 hover:bg-[#2f2f2f]',
+          'flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-[#2f2f2f]',
           !isVisible && 'opacity-40',
         )}
       >
-        <Checkbox size="small" checked={isSelected} tabIndex={-1} sx={{ padding: 0 }} />
+        <Checkbox checked={isSelected} tabIndex={-1} sx={{ padding: 0 }} />
         <Image
           src={`/icons/effects/${effect.icon}.png`}
-          width={20}
-          height={20}
+          width={24}
+          height={24}
           alt={effect.name}
-          className="h-5 w-5"
+          className="h-6 w-6"
         />
-        <span className="text-sm">{effect.name}</span>
+        <span className="text-base">{effect.name}</span>
       </div>
     );
   };
