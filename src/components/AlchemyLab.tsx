@@ -212,7 +212,7 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
             </Toolbar>
           </AppBar>
 
-          <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 48px)' }}>
+          <Box sx={{ display: 'flex', height: 'calc(100vh - 48px)', overflow: 'hidden' }}>
             {/* Persistent filter drawer (lg+ only, editable mode) */}
             {!isViewOnly && (
               <IngredientFilterDialog
