@@ -158,11 +158,14 @@ function FilterContent({
       <div>
         <div className="mb-2 flex items-center justify-between">
           <Typography variant="subtitle2">Effects</Typography>
-          {filters.selectedEffects.size > 0 && (
-            <Button size="small" onClick={clearEffects} className="text-xs normal-case">
-              Clear
-            </Button>
-          )}
+          <Button
+            size="small"
+            onClick={clearEffects}
+            className="text-xs normal-case"
+            sx={{ visibility: filters.selectedEffects.size > 0 ? 'visible' : 'hidden' }}
+          >
+            Clear
+          </Button>
         </div>
 
         <TextField
