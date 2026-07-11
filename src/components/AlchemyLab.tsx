@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { AppBar, Box, Button, Snackbar, StyledEngineProvider, Toolbar, Tooltip, Typography } from '@mui/material';
+import { AppBar, Box, Button, IconButton, Snackbar, StyledEngineProvider, Toolbar, Tooltip, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShareIcon from '@mui/icons-material/Share';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -176,6 +176,15 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
         >
           <AppBar position="static" sx={{ backgroundColor: 'background.paper' }} elevation={1}>
             <Toolbar variant="dense" sx={{ gap: 1, overflow: 'hidden' }}>
+              <IconButton
+                component="a"
+                href="https://oblivion.tools"
+                size="small"
+                aria-label="Oblivion Tools home"
+                sx={{ p: 0.5 }}
+              >
+                <img src="/oblivion-tools-icon.ico" alt="Oblivion Tools" width={16} height={16} style={{ display: 'block' }} />
+              </IconButton>
               <Typography
                 variant="h6"
                 noWrap
