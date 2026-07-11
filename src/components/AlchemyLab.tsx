@@ -4,7 +4,6 @@ import React, { useMemo, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppBar, Box, Button, Snackbar, StyledEngineProvider, Toolbar, Tooltip, Typography } from '@mui/material';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShareIcon from '@mui/icons-material/Share';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -196,12 +195,6 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
 
               {!isViewOnly && (
                 <>
-                  <Button size="small" onClick={handleToggleFilter}>
-                    <FilterAltIcon fontSize="small" />
-                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
-                      Filters
-                    </Box>
-                  </Button>
                   <Button size="small" onClick={handleShare}>
                     <ShareIcon fontSize="small" />
                     <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
