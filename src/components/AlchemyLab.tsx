@@ -3,7 +3,8 @@
 import React, { useMemo, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button, IconButton, Snackbar, StyledEngineProvider, Tooltip } from '@mui/material';
+import { AppBar, Box, Button, Snackbar, StyledEngineProvider, Toolbar, Tooltip, Typography } from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShareIcon from '@mui/icons-material/Share';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -166,10 +167,59 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
           </div>
         )}
 
-        <h1 className="absolute w-screen text-center text-lg">Oblivion Alchemy Lab</h1>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            backgroundColor: 'background.default',
+          }}
+        >
+          <AppBar position="static" sx={{ backgroundColor: 'background.paper' }} elevation={1}>
+            <Toolbar variant="dense" sx={{ gap: 1, overflow: 'hidden' }}>
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{ fontSize: '1rem', fontWeight: 'bold', color: 'secondary.main' }}
+              >
+                Oblivion Alchemy Lab
+              </Typography>
 
-        <div className="flex flex-col">
-          <div className="flex h-screen">
+              <Typography
+                noWrap
+                sx={{ fontSize: '0.75rem', color: 'text.disabled', mx: 1 }}
+              >
+                {mastery}
+              </Typography>
+
+              <Box sx={{ flex: 1 }} />
+
+              {!isViewOnly && (
+                <>
+                  <Button size="small" onClick={handleToggleFilter}>
+                    <FilterAltIcon fontSize="small" />
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
+                      Filters
+                    </Box>
+                  </Button>
+                  <Button size="small" onClick={handleShare}>
+                    <ShareIcon fontSize="small" />
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
+                      Share
+                    </Box>
+                  </Button>
+                  <Button size="small" onClick={() => setIsSettingsOpen(true)}>
+                    <SettingsIcon fontSize="small" />
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
+                      Settings
+                    </Box>
+                  </Button>
+                </>
+              )}
+            </Toolbar>
+          </AppBar>
+
+          <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 48px)' }}>
             {/* Persistent filter drawer (lg+ only, editable mode) */}
             {!isViewOnly && (
               <IngredientFilterDialog
@@ -183,26 +233,6 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
             {/* Main content area - pushed right when drawer is open via flex layout */}
             <div className="flex min-w-0 flex-1 flex-col bg-inherit transition-all duration-[225ms] ease-[cubic-bezier(0.4,0,0.2,1)]">
               <div className="max-w-screen m-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden bg-inherit">
-              {/* Nav bar */}
-              <div className="z-20 flex h-12 w-full flex-row justify-end px-2 pt-6 sm:pt-2">
-                <div className="flex place-items-center gap-2">
-                  <span className="text-sm text-ghost">{mastery}</span>
-                  {!isViewOnly && (
-                    <>
-                      <Tooltip title="Share Brew">
-                        <IconButton onClick={handleShare} size="small">
-                          <ShareIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Player Settings">
-                        <IconButton onClick={() => setIsSettingsOpen(true)} size="small">
-                          <SettingsIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  )}
-                </div>
-              </div>
 
               {isViewOnly ? (
                 // ─── View-only mode ───────────────────────────────────────────
@@ -354,7 +384,7 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
               )}
               </div>
             </div>
-          </div>
+          </Box>
 
           <footer className="w-full border-t border-gray-700 bg-neutral-900 px-6 py-8 text-sm text-gray-400">
             <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 text-center sm:text-left">
@@ -398,7 +428,7 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
               </div>
             </div>
           </footer>
-        </div>
+        </Box>
 
         {!isViewOnly && (
           <PlayerSettingsDialog
