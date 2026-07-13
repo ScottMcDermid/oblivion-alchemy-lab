@@ -204,13 +204,13 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
 
               {!isViewOnly && (
                 <>
-                  <Button size="small" onClick={handleShare}>
+                  <Button size="small" aria-label="Share Build" onClick={handleShare} sx={{ minWidth: 0, px: { xs: '6px', sm: undefined } }}>
                     <ShareIcon fontSize="small" />
                     <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
                       Share
                     </Box>
                   </Button>
-                  <Button size="small" onClick={() => setIsSettingsOpen(true)}>
+                  <Button size="small" aria-label="Settings" onClick={() => setIsSettingsOpen(true)} sx={{ minWidth: 0, px: { xs: '6px', sm: undefined } }}>
                     <SettingsIcon fontSize="small" />
                     <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
                       Settings
