@@ -388,10 +388,10 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
             </div>
           </Box>
 
-          <footer className="w-full border-t border-gray-700 bg-neutral-900 px-6 py-8 text-sm text-gray-400">
+          <footer className="mt-16 w-full border-t border-gray-700 bg-neutral-900 px-6 py-8 text-sm text-gray-400">
             <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 text-center sm:text-left">
               <div className="space-y-2">
-                <p>Oblivion Tool Suite &copy; 2025 Scott McDermid</p>
+                <p>Oblivion Tool Suite © 2025 Scott McDermid</p>
                 <p>
                   Licensed under the{' '}
                   <a
