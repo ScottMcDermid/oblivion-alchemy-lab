@@ -6,8 +6,6 @@ import {
   IconButton,
   Slider,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,7 +30,25 @@ function getMasteryLabel(mastery: Mastery): string {
   }
 }
 
-const qualityOptions: (ApparatusQuality | 'None')[] = ['None', ...apparatusQualities];
+// For required apparatus: indices 0–4 map to Novice–Master
+// For optional apparatus: index 0 = None, indices 1–5 map to Novice–Master
+const requiredMarks = apparatusQualities.map((q, i) => ({ value: i, label: q }));
+const optionalMarks = [
+  { value: 0, label: 'None' },
+  ...apparatusQualities.map((q, i) => ({ value: i + 1, label: q })),
+];
+
+function qualityToIndex(quality: ApparatusQuality | null, required?: boolean): number {
+  if (quality === null) return 0;
+  const idx = apparatusQualities.indexOf(quality);
+  return required ? idx : idx + 1;
+}
+
+function indexToQuality(index: number, required?: boolean): ApparatusQuality | null {
+  if (!required && index === 0) return null;
+  const qualityIndex = required ? index : index - 1;
+  return apparatusQualities[qualityIndex] ?? null;
+}
 
 function ApparatusSelector({
   label,
@@ -45,30 +61,33 @@ function ApparatusSelector({
   required?: boolean;
   onChange: (quality: ApparatusQuality | null) => void;
 }) {
-  const effectiveValue = value ?? 'None';
-  const options = required ? apparatusQualities : qualityOptions;
+  const marks = required ? requiredMarks : optionalMarks;
+  const min = 0;
+  const max = required ? 4 : 5;
+  const sliderValue = qualityToIndex(value, required);
+  const currentLabel = value ?? 'None';
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center gap-2 text-sm">
+      <div className="flex items-center justify-between text-sm">
         <span>{label}</span>
-        {required && <span className="text-xs text-ghost">(Required)</span>}
+        <span className="text-xs text-ghost">{currentLabel}</span>
       </div>
-      <ToggleButtonGroup
-        exclusive
-        size="small"
-        value={effectiveValue}
-        onChange={(_e, newValue) => {
-          if (newValue === null) return;
-          onChange(newValue === 'None' ? null : (newValue as ApparatusQuality));
-        }}
-      >
-        {options.map((opt) => (
-          <ToggleButton key={opt} value={opt} className="px-2 py-1 text-xs">
-            {opt}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+      <div className="px-3">
+        <Slider
+          value={sliderValue}
+          min={min}
+          max={max}
+          step={1}
+          marks={marks}
+          onChange={(_e, val) => {
+            const quality = indexToQuality(val as number, required);
+            if (required && quality === null) return;
+            onChange(quality);
+          }}
+          sx={{ '& .MuiSlider-markLabel': { fontSize: '0.65rem' } }}
+        />
+      </div>
     </div>
   );
 }
