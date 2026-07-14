@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppBar, Box, Button, IconButton, Snackbar, StyledEngineProvider, Toolbar, Tooltip, Typography } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
+import BookIcon from '@mui/icons-material/Book';
 import ShareIcon from '@mui/icons-material/Share';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Image from 'next/image';
@@ -210,10 +210,10 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
                       Share
                     </Box>
                   </Button>
-                  <Button size="small" aria-label="Settings" onClick={() => setIsSettingsOpen(true)} sx={{ minWidth: 0, px: { xs: '6px', sm: undefined } }}>
-                    <SettingsIcon fontSize="small" />
+                  <Button variant="contained" size="small" aria-label="Adjust your skills" onClick={() => setIsSettingsOpen(true)} sx={{ minWidth: 0, px: { xs: '6px', sm: undefined } }}>
+                    <BookIcon fontSize="small" />
                     <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, ml: 0.5 }}>
-                      Settings
+                      Skills
                     </Box>
                   </Button>
                 </>

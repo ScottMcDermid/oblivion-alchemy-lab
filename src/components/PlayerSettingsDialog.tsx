@@ -127,7 +127,7 @@ export default function PlayerSettingsDialog({
         <CloseIcon />
       </IconButton>
 
-      <DialogTitle>Player Settings</DialogTitle>
+      <DialogTitle>Skills</DialogTitle>
 
       <DialogContent className="space-y-6 p-4">
         {/* Alchemy Skill */}
