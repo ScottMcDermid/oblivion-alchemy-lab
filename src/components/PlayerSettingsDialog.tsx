@@ -148,14 +148,16 @@ export default function PlayerSettingsDialog({
               variant="standard"
             />
           </div>
-          <Slider
-            value={localAlchemySkill}
-            onChange={(_e, val) => setLocalAlchemySkill(val as number)}
-            onChangeCommitted={(_e, val) => actions.setAlchemySkill(val as number)}
-            min={0}
-            max={100}
-            step={1}
-          />
+          <div className="px-3">
+            <Slider
+              value={localAlchemySkill}
+              onChange={(_e, val) => setLocalAlchemySkill(val as number)}
+              onChangeCommitted={(_e, val) => actions.setAlchemySkill(val as number)}
+              min={0}
+              max={100}
+              step={1}
+            />
+          </div>
           <div className="flex justify-between text-xs text-ghost">
             <span>{getMasteryLabel(mastery)}</span>
             <span>Can see {visibleEffects} of 4 effects</span>
@@ -180,14 +182,16 @@ export default function PlayerSettingsDialog({
               variant="standard"
             />
           </div>
-          <Slider
-            value={localLuck}
-            onChange={(_e, val) => setLocalLuck(val as number)}
-            onChangeCommitted={(_e, val) => actions.setLuck(val as number)}
-            min={0}
-            max={100}
-            step={1}
-          />
+          <div className="px-3">
+            <Slider
+              value={localLuck}
+              onChange={(_e, val) => setLocalLuck(val as number)}
+              onChangeCommitted={(_e, val) => actions.setLuck(val as number)}
+              min={0}
+              max={100}
+              step={1}
+            />
+          </div>
         </div>
 
         {/* Effective Alchemy */}
