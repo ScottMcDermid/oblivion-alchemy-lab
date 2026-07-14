@@ -386,6 +386,14 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
               )}
               </div>
             </div>
+
+            {/* Skills drawer — persistent right drawer on md+, Dialog on smaller screens */}
+            {!isViewOnly && (
+              <PlayerSettingsDialog
+                open={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+              />
+            )}
           </Box>
 
           <footer className="mt-16 w-full border-t border-gray-700 bg-neutral-900 px-6 py-8 text-sm text-gray-400">
@@ -431,13 +439,6 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
             </div>
           </footer>
         </Box>
-
-        {!isViewOnly && (
-          <PlayerSettingsDialog
-            open={isSettingsOpen}
-            onClose={() => setIsSettingsOpen(false)}
-          />
-        )}
 
         <Snackbar
           open={snackbarMessage !== null}

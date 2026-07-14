@@ -3,10 +3,13 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Drawer,
   IconButton,
   Slider,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -19,6 +22,8 @@ import {
   getVisibleEffectCount,
   Mastery,
 } from '@/utils/alchemyUtils';
+
+const DRAWER_WIDTH = 280;
 
 function getMasteryLabel(mastery: Mastery): string {
   switch (mastery) {
@@ -92,6 +97,140 @@ function ApparatusSelector({
   );
 }
 
+// Shared inner content rendered in both the Dialog and Drawer
+function SkillsContent({
+  localAlchemySkill,
+  setLocalAlchemySkill,
+  localLuck,
+  setLocalLuck,
+  mastery,
+  visibleEffects,
+  effectiveAlchemy,
+  mortarPestleQuality,
+  retortQuality,
+  calcinatorQuality,
+  alembicQuality,
+  actions,
+}: {
+  localAlchemySkill: number;
+  setLocalAlchemySkill: (v: number) => void;
+  localLuck: number;
+  setLocalLuck: (v: number) => void;
+  mastery: Mastery;
+  visibleEffects: number;
+  effectiveAlchemy: number;
+  mortarPestleQuality: ApparatusQuality;
+  retortQuality: ApparatusQuality | null;
+  calcinatorQuality: ApparatusQuality | null;
+  alembicQuality: ApparatusQuality | null;
+  actions: ReturnType<typeof useAlchemyStore.getState>['actions'];
+}) {
+  return (
+    <div className="space-y-6 p-4">
+      {/* Alchemy Skill */}
+      <div>
+        <div className="mb-1 flex items-baseline justify-between">
+          <label className="text-sm">Alchemy Skill</label>
+          <TextField
+            type="number"
+            size="small"
+            value={localAlchemySkill}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setLocalAlchemySkill(val);
+              actions.setAlchemySkill(val);
+            }}
+            inputProps={{ min: 0, max: 100, step: 1 }}
+            className="w-20"
+            variant="standard"
+          />
+        </div>
+        <div className="px-3">
+          <Slider
+            value={localAlchemySkill}
+            onChange={(_e, val) => setLocalAlchemySkill(val as number)}
+            onChangeCommitted={(_e, val) => actions.setAlchemySkill(val as number)}
+            min={0}
+            max={100}
+            step={1}
+          />
+        </div>
+        <div className="flex justify-between text-xs text-ghost">
+          <span>{getMasteryLabel(mastery)}</span>
+          <span>Can see {visibleEffects} of 4 effects</span>
+        </div>
+      </div>
+
+      {/* Luck */}
+      <div>
+        <div className="mb-1 flex items-baseline justify-between">
+          <label className="text-sm">Luck</label>
+          <TextField
+            type="number"
+            size="small"
+            value={localLuck}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setLocalLuck(val);
+              actions.setLuck(val);
+            }}
+            inputProps={{ min: 0, max: 100, step: 1 }}
+            className="w-20"
+            variant="standard"
+          />
+        </div>
+        <div className="px-3">
+          <Slider
+            value={localLuck}
+            onChange={(_e, val) => setLocalLuck(val as number)}
+            onChangeCommitted={(_e, val) => actions.setLuck(val as number)}
+            min={0}
+            max={100}
+            step={1}
+          />
+        </div>
+      </div>
+
+      {/* Effective Alchemy */}
+      <Typography variant="body2" className="text-ghost">
+        Effective Alchemy: {effectiveAlchemy.toFixed(1)}
+      </Typography>
+
+      {/* Apparatus Section */}
+      <div className="space-y-4 border-t border-[#2e2e2e] pt-4">
+        <Typography variant="subtitle2">Apparatus</Typography>
+
+        <ApparatusSelector
+          label="Mortar & Pestle"
+          value={mortarPestleQuality}
+          required
+          onChange={(quality) => {
+            if (quality !== null) actions.setMortarPestleQuality(quality);
+          }}
+        />
+
+        <ApparatusSelector
+          label="Retort"
+          value={retortQuality}
+          onChange={actions.setRetortQuality}
+        />
+
+        <ApparatusSelector
+          label="Calcinator"
+          value={calcinatorQuality}
+          onChange={actions.setCalcinatorQuality}
+        />
+
+        <ApparatusSelector
+          label="Alembic"
+          value={alembicQuality}
+          onChange={actions.setAlembicQuality}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function PlayerSettingsDialog({
   open,
   onClose,
@@ -99,6 +238,9 @@ export default function PlayerSettingsDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
   const storeAlchemySkill = useAlchemyStore((s) => s.alchemySkill);
   const storeLuck = useAlchemyStore((s) => s.luck);
   const mortarPestleQuality = useAlchemyStore((s) => s.mortarPestleQuality);
@@ -126,6 +268,63 @@ export default function PlayerSettingsDialog({
     [localAlchemySkill, localLuck],
   );
 
+  const sharedProps = {
+    localAlchemySkill,
+    setLocalAlchemySkill,
+    localLuck,
+    setLocalLuck,
+    mastery,
+    visibleEffects,
+    effectiveAlchemy,
+    mortarPestleQuality,
+    retortQuality,
+    calcinatorQuality,
+    alembicQuality,
+    actions,
+  };
+
+  const closeButton = (
+    <IconButton
+      aria-label="close"
+      onClick={onClose}
+      sx={{ position: 'absolute', right: 8, top: 8 }}
+    >
+      <CloseIcon />
+    </IconButton>
+  );
+
+  if (isDesktop) {
+    return (
+      <Drawer
+        variant="persistent"
+        anchor="right"
+        open={open}
+        sx={{
+          width: open ? DRAWER_WIDTH : 0,
+          flexShrink: 0,
+          transition: 'width 225ms cubic-bezier(0.4, 0, 0.2, 1)',
+          '& .MuiDrawer-paper': {
+            width: DRAWER_WIDTH,
+            boxSizing: 'border-box',
+            position: 'relative',
+            height: '100%',
+            border: 'none',
+            borderLeft: '1px solid #2e2e2e',
+            backgroundColor: 'inherit',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+          },
+        }}
+      >
+        <div className="relative">
+          {closeButton}
+          <div className="py-3 pl-4 pr-12 text-base font-medium">Skills</div>
+        </div>
+        <SkillsContent {...sharedProps} />
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog
       open={open}
@@ -134,121 +333,10 @@ export default function PlayerSettingsDialog({
         className: 'w-[90vw] max-w-md sm:max-w-lg',
       }}
     >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-
+      {closeButton}
       <DialogTitle>Skills</DialogTitle>
-
       <DialogContent className="space-y-6 p-4">
-        {/* Alchemy Skill */}
-        <div>
-          <div className="mb-1 flex items-baseline justify-between">
-            <label className="text-sm">Alchemy Skill</label>
-            <TextField
-              type="number"
-              size="small"
-              value={localAlchemySkill}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setLocalAlchemySkill(val);
-                actions.setAlchemySkill(val);
-              }}
-              inputProps={{ min: 0, max: 100, step: 1 }}
-              className="w-20"
-              variant="standard"
-            />
-          </div>
-          <div className="px-3">
-            <Slider
-              value={localAlchemySkill}
-              onChange={(_e, val) => setLocalAlchemySkill(val as number)}
-              onChangeCommitted={(_e, val) => actions.setAlchemySkill(val as number)}
-              min={0}
-              max={100}
-              step={1}
-            />
-          </div>
-          <div className="flex justify-between text-xs text-ghost">
-            <span>{getMasteryLabel(mastery)}</span>
-            <span>Can see {visibleEffects} of 4 effects</span>
-          </div>
-        </div>
-
-        {/* Luck */}
-        <div>
-          <div className="mb-1 flex items-baseline justify-between">
-            <label className="text-sm">Luck</label>
-            <TextField
-              type="number"
-              size="small"
-              value={localLuck}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setLocalLuck(val);
-                actions.setLuck(val);
-              }}
-              inputProps={{ min: 0, max: 100, step: 1 }}
-              className="w-20"
-              variant="standard"
-            />
-          </div>
-          <div className="px-3">
-            <Slider
-              value={localLuck}
-              onChange={(_e, val) => setLocalLuck(val as number)}
-              onChangeCommitted={(_e, val) => actions.setLuck(val as number)}
-              min={0}
-              max={100}
-              step={1}
-            />
-          </div>
-        </div>
-
-        {/* Effective Alchemy */}
-        <Typography variant="body2" className="text-ghost">
-          Effective Alchemy: {effectiveAlchemy.toFixed(1)}
-        </Typography>
-
-        {/* Apparatus Section */}
-        <div className="space-y-4 border-t border-[#2e2e2e] pt-4">
-          <Typography variant="subtitle2">Apparatus</Typography>
-
-          <ApparatusSelector
-            label="Mortar & Pestle"
-            value={mortarPestleQuality}
-            required
-            onChange={(quality) => {
-              if (quality !== null) actions.setMortarPestleQuality(quality);
-            }}
-          />
-
-          <ApparatusSelector
-            label="Retort"
-            value={retortQuality}
-            onChange={actions.setRetortQuality}
-          />
-
-          <ApparatusSelector
-            label="Calcinator"
-            value={calcinatorQuality}
-            onChange={actions.setCalcinatorQuality}
-          />
-
-          <ApparatusSelector
-            label="Alembic"
-            value={alembicQuality}
-            onChange={actions.setAlembicQuality}
-          />
-        </div>
+        <SkillsContent {...sharedProps} />
       </DialogContent>
     </Dialog>
   );
