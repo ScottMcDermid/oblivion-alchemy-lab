@@ -221,7 +221,7 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
             </Toolbar>
           </AppBar>
 
-          <Box sx={{ display: 'flex', height: 'calc(100vh - 48px)', overflow: 'hidden' }}>
+          <Box sx={{ display: 'flex', height: { xs: 'auto', sm: 'calc(100vh - 48px)' }, overflow: { xs: 'visible', sm: 'hidden' } }}>
             {/* Persistent filter drawer (lg+ only, editable mode) */}
             {!isViewOnly && (
               <IngredientFilterDialog
@@ -234,7 +234,7 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
 
             {/* Main content area - pushed right when drawer is open via flex layout */}
             <div className="flex min-w-0 flex-1 flex-col bg-inherit transition-all duration-[225ms] ease-[cubic-bezier(0.4,0,0.2,1)]">
-              <div className="max-w-screen m-auto flex w-full max-w-6xl flex-1 flex-col overflow-hidden bg-inherit">
+              <div className="max-w-screen m-auto flex w-full max-w-6xl flex-1 flex-col sm:overflow-hidden bg-inherit">
 
               {isViewOnly ? (
                 // ─── View-only mode ───────────────────────────────────────────
@@ -365,9 +365,9 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
                 </div>
               ) : (
                 // ─── Normal editable mode ─────────────────────────────────────
-                <div className="flex w-full flex-1 flex-col justify-center gap-6 overflow-y-auto bg-inherit sm:flex-row">
+                <div className="flex w-full flex-1 flex-col justify-center gap-6 bg-inherit sm:flex-row sm:overflow-y-auto">
                   {/* Left panel: Ingredient selector */}
-                  <div className="flex min-h-0 flex-1 flex-shrink-0 flex-col sm:max-w-80">
+                  <div className="flex min-h-0 flex-shrink-0 flex-col max-h-[50vh] sm:max-h-full sm:flex-1 sm:max-w-80">
                     <IngredientSelector
                       onIngredientSelect={(ingredient) => {
                         addIngredient(ingredient);
@@ -378,7 +378,7 @@ export default function AlchemyLab({ sharedBrew }: { sharedBrew?: BrewData }) {
                   </div>
 
                   {/* Right panel: Potion result + Active ingredients */}
-                  <div className="mt-3 max-h-80 flex-1 overflow-y-auto bg-inherit sm:max-h-full lg:max-w-full">
+                  <div className="mt-3 flex-1 bg-inherit sm:max-h-full sm:overflow-y-auto lg:max-w-full">
                     <PotionResult />
                     <ActiveIngredients />
                   </div>
