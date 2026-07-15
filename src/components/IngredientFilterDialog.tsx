@@ -290,9 +290,9 @@ export default function IngredientFilterDialog({
   filters,
   onFiltersChange,
 }: FilterProps) {
-  const isLg = useMediaQuery('(min-width: 1024px)');
+  const isXl = useMediaQuery('(min-width: 1280px)');
 
-  if (isLg) {
+  if (isXl) {
     return (
       <Drawer
         variant="persistent"

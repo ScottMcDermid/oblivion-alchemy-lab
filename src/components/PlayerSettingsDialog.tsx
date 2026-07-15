@@ -9,7 +9,6 @@ import {
   TextField,
   Typography,
   useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -244,8 +243,7 @@ export default function PlayerSettingsDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   const storeAlchemySkill = useAlchemyStore((s) => s.alchemySkill);
   const storeLuck = useAlchemyStore((s) => s.luck);
@@ -336,7 +334,7 @@ export default function PlayerSettingsDialog({
       open={open}
       onClose={onClose}
       PaperProps={{
-        className: 'w-[90vw] max-w-md sm:max-w-lg',
+        className: 'w-[90vw] max-w-sm sm:max-w-md md:max-w-lg',
       }}
     >
       {closeButton}
