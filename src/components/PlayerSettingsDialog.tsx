@@ -37,10 +37,10 @@ function getMasteryLabel(mastery: Mastery): string {
 
 // For required apparatus: indices 0–4 map to Novice–Master
 // For optional apparatus: index 0 = None, indices 1–5 map to Novice–Master
-const requiredMarks = apparatusQualities.map((q, i) => ({ value: i, label: q }));
+const requiredMarks = apparatusQualities.map((_, i) => ({ value: i }));
 const optionalMarks = [
-  { value: 0, label: 'None' },
-  ...apparatusQualities.map((q, i) => ({ value: i + 1, label: q })),
+  { value: 0 },
+  ...apparatusQualities.map((_, i) => ({ value: i + 1 })),
 ];
 
 function qualityToIndex(quality: ApparatusQuality | null, required?: boolean): number {
@@ -90,7 +90,6 @@ function ApparatusSelector({
             if (required && quality === null) return;
             onChange(quality);
           }}
-          sx={{ '& .MuiSlider-markLabel': { fontSize: '0.65rem' } }}
         />
       </div>
     </div>
