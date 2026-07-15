@@ -320,9 +320,13 @@ export default function PlayerSettingsDialog({
           },
         }}
       >
-        <div className="relative">
-          {closeButton}
-          <div className="py-3 pl-4 pr-12 text-base font-medium">Skills</div>
+        <div className="flex items-center justify-between px-4 py-3">
+          <Typography variant="h6" className="text-base font-semibold">
+            Skills
+          </Typography>
+          <IconButton aria-label="close" onClick={onClose} size="small">
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </div>
         <SkillsContent {...sharedProps} />
       </Drawer>

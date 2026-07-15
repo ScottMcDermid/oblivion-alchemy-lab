@@ -139,7 +139,11 @@ function FilterContent({
           !isVisible && 'opacity-40',
         )}
       >
-        <Checkbox checked={isSelected} tabIndex={-1} sx={{ padding: 0 }} />
+        <Checkbox
+          checked={isSelected}
+          tabIndex={-1}
+          sx={{ padding: 0, color: 'white', '&.Mui-checked': { color: 'white' } }}
+        />
         <Image
           src={`/icons/effects/${effect.icon}.png`}
           width={24}
@@ -169,13 +173,17 @@ function FilterContent({
         </div>
 
         <TextField
-          label="Search Effects"
+          placeholder="Search effects"
           variant="outlined"
           size="small"
           fullWidth
           value={effectSearch}
           onChange={(e) => setEffectSearch(e.target.value)}
           className="mb-2"
+          sx={{
+            '& .MuiInputBase-input': { color: 'white' },
+            '& .MuiInputBase-input::placeholder': { color: 'white', opacity: 0.6 },
+          }}
         />
 
         <div className="max-h-64 overflow-y-auto rounded-md border border-[#2e2e2e] sm:max-h-80 lg:max-h-[calc(100vh-480px)]">
