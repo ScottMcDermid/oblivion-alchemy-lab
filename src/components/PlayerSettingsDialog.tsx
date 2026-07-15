@@ -59,11 +59,13 @@ function ApparatusSelector({
   label,
   value,
   required,
+  subtext,
   onChange,
 }: {
   label: string;
   value: ApparatusQuality | null;
   required?: boolean;
+  subtext?: string;
   onChange: (quality: ApparatusQuality | null) => void;
 }) {
   const marks = required ? requiredMarks : optionalMarks;
@@ -92,6 +94,7 @@ function ApparatusSelector({
           }}
         />
       </div>
+      {subtext && <p className="text-xs text-ghost">{subtext}</p>}
     </div>
   );
 }
@@ -203,6 +206,7 @@ function SkillsContent({
           label="Mortar & Pestle"
           value={mortarPestleQuality}
           required
+          subtext="Required to brew potions. Quality scales potion strength."
           onChange={(quality) => {
             if (quality !== null) actions.setMortarPestleQuality(quality);
           }}
@@ -211,18 +215,21 @@ function SkillsContent({
         <ApparatusSelector
           label="Retort"
           value={retortQuality}
+          subtext="Boosts magnitude and duration of beneficial effects."
           onChange={actions.setRetortQuality}
         />
 
         <ApparatusSelector
           label="Calcinator"
           value={calcinatorQuality}
+          subtext="Boosts magnitude and duration of all effects, including negative ones."
           onChange={actions.setCalcinatorQuality}
         />
 
         <ApparatusSelector
           label="Alembic"
           value={alembicQuality}
+          subtext="Reduces duration of negative effects in potions. No effect on poisons."
           onChange={actions.setAlembicQuality}
         />
       </div>
