@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { Badge, TextField, Button, IconButton, Tooltip } from '@mui/material';
+import { Badge, TextField, Button, IconButton, Tooltip, InputAdornment } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
 import Image from 'next/image';
 
 import { effectById, EffectId } from '@/data/effects';
@@ -95,17 +96,30 @@ export default function IngredientSelector({
     <div className="flex h-full flex-col">
       <div className="mb-4 mt-2 flex items-center gap-1 px-2">
         <TextField
-          label="Search Ingredients"
+          placeholder="Search ingredients..."
           variant="outlined"
           size="small"
           fullWidth
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              fontSize: '0.85rem',
+            },
+          }}
         />
         <Tooltip title="Filter Ingredients">
           <IconButton
             onClick={onToggleFilter}
             size="small"
+            sx={{ color: 'text.secondary' }}
           >
             <Badge
               color="secondary"
